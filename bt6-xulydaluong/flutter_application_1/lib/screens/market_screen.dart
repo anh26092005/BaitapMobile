@@ -66,7 +66,8 @@ class _MarketScreenState extends State<MarketScreen> {
           (s) => Coin(
             symbol: s,
             name: s,
-            image: 'https://cryptoicons.org/api/icon/${s.toLowerCase()}/64',
+            image:
+                'https://raw.githubusercontent.com/spothq/cryptocurrency-icons/master/128/color/${s.toLowerCase()}.png',
             price: 0,
             change24h: 0,
           ),

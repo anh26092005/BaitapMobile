@@ -1,8 +1,8 @@
 class Coin {
-  final String symbol;   // BTC
-  final String name;     // Bitcoin (đơn giản: trùng symbol)
-  final String image;    // url icon (cryptoicons)
-  final double price;    // last price
+  final String symbol; // BTC
+  final String name; // Bitcoin (đơn giản: trùng symbol)
+  final String image; // url icon (cryptoicons)
+  final double price; // last price
   final double change24h;
 
   Coin({
