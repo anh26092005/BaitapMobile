@@ -1,0 +1,73 @@
+import 'package:flutter/material.dart';
+import '../models/task.dart';
+import '../services/api_services.dart';
+
+class DetailScreen extends StatefulWidget {
+  final int taskId;
+  const DetailScreen({super.key, required this.taskId});
+
+  @override
+  State<DetailScreen> createState() => _DetailScreenState();
+}
+
+class _DetailScreenState extends State<DetailScreen> {
+  late Future<Task> task;
+
+  @override
+  void initState() {
+    super.initState();
+    task = ApiService.fetchTaskDetail(widget.taskId);
+  }
+
+  void deleteTask() async {
+    await ApiService.deleteTask(widget.taskId);
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text("Đã xóa Task")));
+    Navigator.pop(context, true);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text("Chi tiết công việc")),
+      body: FutureBuilder<Task>(
+        future: task,
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          final t = snapshot.data!;
+          return Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  t.title,
+                  style: const TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Text("Status: ${t.status}"),
+                Text("Time: ${t.time}"),
+                const SizedBox(height: 20),
+                Text(t.description),
+                const Spacer(),
+                ElevatedButton.icon(
+                  onPressed: deleteTask,
+                  icon: const Icon(Icons.delete),
+                  label: const Text("Xóa Task"),
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
